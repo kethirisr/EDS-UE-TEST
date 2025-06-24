@@ -1,27 +1,76 @@
+.hero {
+  padding: 4rem 2rem;
+  background: #f5f5f5;
+}
+
+/* Base structure for content */
 .hero-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* stacked by default */
   align-items: center;
+  text-align: center;
+  gap: 2rem;
 }
 
-.hero--image-left .hero-wrapper,
-.hero--image-right .hero-wrapper {
+/* Variation: Centered */
+.hero--centered .hero-wrapper {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Variation: Image Left */
+.hero--image-left .hero-wrapper {
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  text-align: left;
+  gap: 2rem;
 }
 
+/* Variation: Image Right */
+.hero--image-right .hero-wrapper {
+  flex-direction: row-reverse;
+  align-items: center;
+  text-align: left;
+  gap: 2rem;
+}
+
+/* Image container rules */
 .hero-image {
-  flex: 0 0 40%; /* fixed-ish width */
+  flex: 0 0 40%;
   max-width: 40%;
-}
-
-.hero-text {
-  flex: 1;
 }
 
 .hero-image img {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  display: block;
+}
+
+/* Text container rules */
+.hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+/* Responsive stacking on smaller screens */
+@media (max-width: 768px) {
+  .hero--image-left .hero-wrapper,
+  .hero--image-right .hero-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-image,
+  .hero-text {
+    max-width: 100%;
+    flex: unset;
+  }
 }
