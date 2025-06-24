@@ -1,35 +1,43 @@
 export default function decorate(block) {
-    block.classList.add('hero');
-  
-    const variation = block.className.match(/hero\(([^)]+)\)/i)?.[1]?.toLowerCase();
-    if (variation) block.classList.add(`hero--${variation.trim()}`);
-  
-    const rows = [...block.children];
-    const [imageRow, titleRow] = rows;
-  
-    const image = imageRow?.querySelector('img');
-    const title = titleRow?.textContent;
-  
-    const wrapper = document.createElement('div');
-    wrapper.className = 'hero-wrapper';
-  
-    if (image) {
-      const imgContainer = document.createElement('div');
-      imgContainer.className = 'hero-image';
-      imgContainer.appendChild(image);
-      wrapper.appendChild(imgContainer);
+  block.classList.add('hero');
+
+  // Apply layout style from the class string, e.g., hero(centered)
+  const styleMatch = block.className.match(/hero\(([^)]+)\)/i);
+  const styleClass = styleMatch?.[1]?.toLowerCase();
+  if (styleClass) block.classList.add(`hero--${styleClass.trim()}`);
+
+  // Attempt to extract authorable fields based on expected model structure
+  const rows = [...block.children];
+  let imageEl, titleText;
+
+  // Assume the image and title could be in any row
+  rows.forEach(row => {
+    if (!imageEl) imageEl = row.querySelector('img');
+    if (!titleText) {
+      const text = row.textContent?.trim();
+      if (text) titleText = text;
     }
-  
-    if (title) {
-      const textContainer = document.createElement('div');
-      textContainer.className = 'hero-text';
-      const heading = document.createElement('h1');
-      heading.textContent = title;
-      textContainer.appendChild(heading);
-      wrapper.appendChild(textContainer);
-    }
-  
-    block.textContent = '';
-    block.appendChild(wrapper);
+  });
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'hero-wrapper';
+
+  if (imageEl) {
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'hero-image';
+    imageContainer.appendChild(imageEl);
+    wrapper.appendChild(imageContainer);
   }
-  
+
+  if (titleText) {
+    const textContainer = document.createElement('div');
+    textContainer.className = 'hero-text';
+    const heading = document.createElement('h1');
+    heading.textContent = titleText;
+    textContainer.appendChild(heading);
+    wrapper.appendChild(textContainer);
+  }
+
+  block.innerHTML = '';
+  block.appendChild(wrapper);
+}
