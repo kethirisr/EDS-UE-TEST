@@ -37,11 +37,11 @@
         "label": "Headline",
         "valueType": "string"
       },
-      {
-        "component": "image",
+     {
+        "component": "reference",
         "name": "image",
         "label": "Hero Image",
-        "valueType": "string"
+        "multi": false
       }
     ]
   }
