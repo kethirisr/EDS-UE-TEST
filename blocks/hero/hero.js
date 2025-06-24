@@ -1,21 +1,23 @@
 export default function decorate(block) {
   block.classList.add('hero');
 
-  // Apply layout style from the class string, e.g., hero(centered)
+  // Extract layout variation from the class string: hero(image-left)
   const styleMatch = block.className.match(/hero\(([^)]+)\)/i);
-  const styleClass = styleMatch?.[1]?.toLowerCase();
-  if (styleClass) block.classList.add(`hero--${styleClass.trim()}`);
+  const styleClass = styleMatch?.[1]?.toLowerCase()?.trim();
 
-  // Attempt to extract authorable fields based on expected model structure
+  if (styleClass) {
+    block.classList.add(`hero--${styleClass}`);
+  }
+
+  // Find the image and title from block's children
   const rows = [...block.children];
   let imageEl, titleText;
 
-  // Assume the image and title could be in any row
-  rows.forEach(row => {
+  rows.forEach((row) => {
     if (!imageEl) imageEl = row.querySelector('img');
     if (!titleText) {
-      const text = row.textContent?.trim();
-      if (text) titleText = text;
+      const maybeText = row.textContent?.trim();
+      if (maybeText) titleText = maybeText;
     }
   });
 
