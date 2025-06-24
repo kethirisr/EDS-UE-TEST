@@ -1,26 +1,38 @@
 export default function decorate(block) {
   block.classList.add('hero');
 
-  // Extract layout variation from the class string: hero(image-left)
-  const styleMatch = block.className.match(/hero\(([^)]+)\)/i);
-  const styleClass = styleMatch?.[1]?.toLowerCase()?.trim();
+  // Handle both formats: hero(image-left) or image-left
+  let variation;
 
-  if (styleClass) {
-    block.classList.add(`hero--${styleClass}`);
+  // Check for hero(image-left) syntax
+  const styleMatch = block.className.match(/hero\(([^)]+)\)/i);
+  if (styleMatch?.[1]) {
+    variation = styleMatch[1].toLowerCase().trim();
+  } else {
+    // Check for direct variation class (e.g., image-left)
+    const classList = Array.from(block.classList);
+    variation = classList.find(cls =>
+      ['centered', 'image-left', 'image-right'].includes(cls)
+    );
   }
 
-  // Find the image and title from block's children
+  if (variation) {
+    block.classList.add(`hero--${variation}`);
+  }
+
+  // Extract image and title text
   const rows = [...block.children];
   let imageEl, titleText;
 
   rows.forEach((row) => {
     if (!imageEl) imageEl = row.querySelector('img');
     if (!titleText) {
-      const maybeText = row.textContent?.trim();
-      if (maybeText) titleText = maybeText;
+      const text = row.textContent?.trim();
+      if (text) titleText = text;
     }
   });
 
+  // Build structured layout
   const wrapper = document.createElement('div');
   wrapper.className = 'hero-wrapper';
 
