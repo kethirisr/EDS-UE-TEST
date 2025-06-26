@@ -213,7 +213,7 @@
           { "name": "two", "value": "two" },
           { "name": "three", "value": "three" }
         ]
-      }
+      },
       {
         "component": "text",
         "name": "title",
