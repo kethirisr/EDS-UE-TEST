@@ -204,6 +204,17 @@
         ]
       },
       {
+        "component": "select",
+        "name": "classnew",
+        "label": "Hero test",
+        "valueType": "string",
+        "options": [
+          { "name": "one", "value": "one" },
+          { "name": "two", "value": "two" },
+          { "name": "three", "value": "three" }
+        ]
+      }
+      {
         "component": "text",
         "name": "title",
         "label": "Headline",
