@@ -11,6 +11,7 @@
             "model": "hero",
             "title": "Welcome to Our Platform",
             "classes": "centered",
+            "classnew": "one",
             "image": "/content/dam/EDS-UE-TEST/content-at-scale.png"
           }
         }
@@ -29,6 +30,17 @@
           { "name": "Centered", "value": "centered" },
           { "name": "Image Left", "value": "image-left" },
           { "name": "Image Right", "value": "image-right" }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "classnew",
+        "label": "Hero test",
+        "valueType": "string",
+        "options": [
+          { "name": "one", "value": "one" },
+          { "name": "two", "value": "two" },
+          { "name": "three", "value": "three" }
         ]
       },
       {
