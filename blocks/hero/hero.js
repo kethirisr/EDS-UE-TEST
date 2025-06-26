@@ -1,46 +1,41 @@
 export default function decorate(block) {
   block.classList.add('hero');
 
-  // Handle both formats: hero(image-left) or image-left
-  let variation;
+  // Define supported layout variants
+  const variants = ['centered', 'image-left', 'image-right'];
 
-  // Check for hero(image-left) syntax
-  const styleMatch = block.className.match(/hero\(([^)]+)\)/i);
-  if (styleMatch?.[1]) {
-    variation = styleMatch[1].toLowerCase().trim();
-  } else {
-    // Check for direct variation class (e.g., image-left)
-    const classList = Array.from(block.classList);
-    variation = classList.find(cls =>
-      ['centered', 'image-left', 'image-right'].includes(cls)
-    );
+  // Find which variant class is already applied to the block
+  const activeVariant = variants.find(v => block.classList.contains(v));
+  variants.forEach(v => block.classList.remove(`hero--${v}`)); // Clear old variations
+
+  if (activeVariant) {
+    block.classList.add(`hero--${activeVariant}`);
   }
 
-  if (variation) {
-    block.classList.add(`hero--${variation}`);
-  }
+  // Prevent full rebuild if already decorated (for UE live updates)
+  if (block.querySelector('.hero-wrapper')) return;
 
-  // Extract image and title text
+  // Extract content: image and title
   const rows = [...block.children];
   let imageEl, titleText;
 
-  rows.forEach((row) => {
+  rows.forEach(row => {
     if (!imageEl) imageEl = row.querySelector('img');
     if (!titleText) {
-      const text = row.textContent?.trim();
-      if (text) titleText = text;
+      const maybeText = row.textContent?.trim();
+      if (maybeText) titleText = maybeText;
     }
   });
 
-  // Build structured layout
+  // Create layout
   const wrapper = document.createElement('div');
   wrapper.className = 'hero-wrapper';
 
   if (imageEl) {
-    const imageContainer = document.createElement('div');
-    imageContainer.className = 'hero-image';
-    imageContainer.appendChild(imageEl);
-    wrapper.appendChild(imageContainer);
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'hero-image';
+    imgContainer.appendChild(imageEl);
+    wrapper.appendChild(imgContainer);
   }
 
   if (titleText) {
